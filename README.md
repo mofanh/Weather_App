@@ -58,8 +58,8 @@ https://tailwindcss.com/docs/clear
 https://cdnjs.com/libraries/font-awesome
 ```
 
-### mapbox获取地理信息api
+### ‘心知天气’获取地理信息api
 
 ```
-https://www.mapbox.com/
+https://www.seniverse.com/products?iid=94ececb8-2d3b-4afd-88b0-bf5e5d7038c5
 ```

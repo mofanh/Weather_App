@@ -11,17 +11,19 @@
       <ul
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
       >
-        <p v-if="searchError">Sorry, something went wrong, please try again</p>
-        <p v-if="mapSearchResult.length == 0 && !searchError">
-          No results match your query, try a different term
+        <p class="py-2" v-if="searchError">
+          Sorry, something went wrong, please try again
         </p>
-        <template v-else>
+        <!-- <p class="py-2" v-if="!searchError && mapSearchResults.length === 0">
+          No results match your query, try a different term.
+        </p> -->
+        <template>
           <li
-            v-for="searchResult in mapSearchResult"
-            :key="searchResult.id"
+            v-for="searchResult in mapSearchResults"
+            :key="searchResult.date"
             class="py-2 cursor-pointer"
           >
-            {{ searchResult.place_name }}
+            {{ searchResult }}
           </li>
         </template>
       </ul>
@@ -36,7 +38,7 @@ import axios from "axios";
 const APIKey = "S5pdFsyVtm1NMYhdk";
 const searchQuery = ref("");
 const queryTimeout = ref(null);
-const mapSearchResult = ref(null);
+const mapSearchResults = ref(null);
 const searchError = ref(null);
 
 const getSearchResult = () => {
@@ -45,17 +47,17 @@ const getSearchResult = () => {
     if (searchQuery.value !== "") {
       try {
         const result = await axios.get(
-          `https://api.seniverse.com/v3/weather/daily.json?key=${APIKey}&location=beijing&language=zh-Hans&unit=c&start=-1&days=5`
+          `https://api.seniverse.com/v3/weather/daily.json?key=${APIKey}&location=${searchQuery.value}&language=zh-Hans&unit=c&start=-1&days=5`
         );
-        mapSearchResult.value = result.data;
-        console.log(result);
+        mapSearchResults.value = result.data.results[0].daily;
+        console.log(mapSearchResults.value);
       } catch {
         searchError.value = true;
       }
 
       return;
     }
-    mapSearchResult.value = null;
+    mapSearchResults.value = null;
   }, 300);
 };
 </script>
