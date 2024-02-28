@@ -10,14 +10,15 @@
       />
       <ul
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
+        v-if="mapSearchResults"
       >
         <p class="py-2" v-if="searchError">
           Sorry, something went wrong, please try again
         </p>
-        <!-- <p class="py-2" v-if="!searchError && mapSearchResults.length === 0">
+        <p class="py-2" v-if="!searchError && mapSearchResults.length === 0">
           No results match your query, try a different term.
-        </p> -->
-        <template>
+        </p>
+        <template v-else>
           <li
             v-for="searchResult in mapSearchResults"
             :key="searchResult.date"
@@ -50,7 +51,7 @@ const getSearchResult = () => {
           `https://api.seniverse.com/v3/weather/daily.json?key=${APIKey}&location=${searchQuery.value}&language=zh-Hans&unit=c&start=-1&days=5`
         );
         mapSearchResults.value = result.data.results[0].daily;
-        console.log(mapSearchResults.value);
+        console.log(mapSearchResults.value[0]);
       } catch {
         searchError.value = true;
       }
