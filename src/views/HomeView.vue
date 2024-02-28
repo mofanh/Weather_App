@@ -23,6 +23,7 @@
             v-for="searchResult in mapSearchResults"
             :key="searchResult.date"
             class="py-2 cursor-pointer"
+            @click="previewCity(searchResult)"
           >
             {{ searchResult }}
           </li>
@@ -35,6 +36,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 const APIKey = "S5pdFsyVtm1NMYhdk";
 const searchQuery = ref("");
@@ -60,5 +62,9 @@ const getSearchResult = () => {
     }
     mapSearchResults.value = null;
   }, 300);
+};
+
+const previewCity = (searchResult) => {
+  console.log(searchResult);
 };
 </script>
