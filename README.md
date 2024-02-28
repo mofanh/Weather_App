@@ -41,3 +41,19 @@ npm install -D tailwindcss postcss autoprefixer
 ```sh
 npx tailwindcss init -p
 ```
+
+### docs
+
+```
+https://tailwindcss.com/docs/clear
+```
+
+# 使用的资源
+
+### cdnjs
+
+使用 Font Awesome 提供的大量 svg 图标和对应的 CSS 类
+
+```
+https://cdnjs.com/libraries/font-awesome
+```
