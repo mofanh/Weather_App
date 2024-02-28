@@ -11,8 +11,20 @@
       <ul
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
       >
-      <li v-for=""></li>
-    </ul>
+        <p v-if="searchError">Sorry, something went wrong, please try again</p>
+        <p v-if="mapSearchResult.length == 0 && !searchError">
+          No results match your query, try a different term
+        </p>
+        <template v-else>
+          <li
+            v-for="searchResult in mapSearchResult"
+            :key="searchResult.id"
+            class="py-2 cursor-pointer"
+          >
+            {{ searchResult.place_name }}
+          </li>
+        </template>
+      </ul>
     </div>
   </main>
 </template>
@@ -21,21 +33,26 @@
 import { ref } from "vue";
 import axios from "axios";
 
-const mapAPIKey = "4fcaad0af910cdc0b9cc03c6f8908a30";
+const APIKey = "S5pdFsyVtm1NMYhdk";
 const searchQuery = ref("");
 const queryTimeout = ref(null);
 const mapSearchResult = ref(null);
+const searchError = ref(null);
 
 const getSearchResult = () => {
   queryTimeout.value = setTimeout(async () => {
     clearTimeout(queryTimeout.value);
     if (searchQuery.value !== "") {
-      const result = await axios.get(
-        `https://restapi.amap.com/v3/weather/weatherInfo?key=${mapAPIKey}&city=${searchQuery.value}`
-        // `https://restapi.amap.com/v3/weather/weatherInfo?key=${mapAPIKey}8&city=110000&extensions=all`
-      );
-      mapSearchResult.value = result.data;
-      console.log(result);
+      try {
+        const result = await axios.get(
+          `https://api.seniverse.com/v3/weather/daily.json?key=${APIKey}&location=beijing&language=zh-Hans&unit=c&start=-1&days=5`
+        );
+        mapSearchResult.value = result.data;
+        console.log(result);
+      } catch {
+        searchError.value = true;
+      }
+
       return;
     }
     mapSearchResult.value = null;
