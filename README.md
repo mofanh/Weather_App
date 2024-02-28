@@ -57,3 +57,9 @@ https://tailwindcss.com/docs/clear
 ```
 https://cdnjs.com/libraries/font-awesome
 ```
+
+### mapbox获取地理信息api
+
+```
+https://www.mapbox.com/
+```
