@@ -21,11 +21,11 @@
         <template v-else>
           <li
             v-for="searchResult in mapSearchResults"
-            :key="searchResult.date"
+            :key="searchResult.id"
             class="py-2 cursor-pointer"
             @click="previewCity(searchResult)"
           >
-            {{ searchResult }}
+            {{ searchResult.place_name }}
           </li>
         </template>
       </ul>
@@ -38,7 +38,9 @@ import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
-const APIKey = "S5pdFsyVtm1NMYhdk";
+// const APIKey = "S5pdFsyVtm1NMYhdk";
+const mapboxAPIKey =
+  "pk.eyJ1Ijoiam9obmtvbWFybmlja2kiLCJhIjoiY2t5NjFzODZvMHJkaDJ1bWx6OGVieGxreSJ9.IpojdT3U3NENknF6_WhR2Q";
 const searchQuery = ref("");
 const queryTimeout = ref(null);
 const mapSearchResults = ref(null);
@@ -49,11 +51,17 @@ const getSearchResult = () => {
     clearTimeout(queryTimeout.value);
     if (searchQuery.value !== "") {
       try {
+        // const result = await axios.get(
+        //   `https://api.seniverse.com/v3/weather/daily.json?key=${APIKey}&location=${searchQuery.value}&language=zh-Hans&unit=c&start=-1&days=5`
+        //   // `http://api.openweathermap.org/data/2.5/forecast?q=beijing&appid=${APIKey}`
+        // );
+        // mapSearchResults.value = result.data.results[0].daily;
+        // console.log(mapSearchResults.value[0]);
+
         const result = await axios.get(
-          `https://api.seniverse.com/v3/weather/daily.json?key=${APIKey}&location=${searchQuery.value}&language=zh-Hans&unit=c&start=-1&days=5`
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place`
         );
-        mapSearchResults.value = result.data.results[0].daily;
-        console.log(mapSearchResults.value[0]);
+        mapSearchResults.value = result.data.features;
       } catch {
         searchError.value = true;
       }
@@ -64,7 +72,17 @@ const getSearchResult = () => {
   }, 300);
 };
 
+const router = useRouter();
 const previewCity = (searchResult) => {
-  console.log(searchResult);
+  const [city, state] = searchResult.place_name.split(","); // 时间、经纬度
+  router.push({
+    name: "cityView",
+    params: { state: state.replaceAll(" ", ""), city: city },
+    query: {
+      lat: searchResult.geometry.coordinates[1],
+      lng: searchResult.geometry.coordinates[0],
+      preview: true,
+    },
+  });
 };
 </script>
