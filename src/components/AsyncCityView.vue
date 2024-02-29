@@ -104,6 +104,14 @@
       </div>
     </div>
   </div>
+
+  <div
+    class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
+    @click="removeCity"
+  >
+    <i class="fa-solid fa-trash"></i>
+    <p>Remove City</p>
+  </div>
 </template>
 
 <script setup>
@@ -140,5 +148,8 @@ const weatherData = await getWeatherData();
 console.log("weatherData");
 console.log(weatherData);
 
-// const router = useRouter();
+const router = useRouter();
+const removeCity = () => {
+  
+}
 </script>
