@@ -52,7 +52,7 @@
         <div class="flex gap-10 overflow-x-scroll">
           <div
             v-for="hourData in weatherData.hourly"
-            :key="hourly.dt"
+            :key="hourData"
             class="flex flex-col gap-4 items-center"
           >
             <p class="whitesapce-nowrap text-md">
@@ -103,18 +103,19 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div
-    class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
-    @click="removeCity"
-  >
-    <i class="fa-solid fa-trash"></i>
-    <p>Remove City</p>
+    <div
+      class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
+      @click="removeCity"
+    >
+      <i class="fa-solid fa-trash"></i>
+      <p>Remove City</p>
+    </div>
   </div>
 </template>
 
 <script setup>
+import HomeView from "@/views/HomeView.vue";
 import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 
@@ -150,6 +151,12 @@ console.log(weatherData);
 
 const router = useRouter();
 const removeCity = () => {
-  
-}
+  // console.log("remove");
+  const cities = JSON.parse(localStorage.getItem("savedCities"));
+  const updatedCities = cities.filter((city) => city.id !== route.query.id);
+  localStorage.setItem("savedCities", JSON.stringify(updatedCities));
+  router.push({
+    name: "home",
+  });
+};
 </script>

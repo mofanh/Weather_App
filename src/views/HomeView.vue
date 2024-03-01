@@ -30,6 +30,12 @@
         </template>
       </ul>
     </div>
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <!-- 异步页面需要Suspense提供给主页面等待效果 -->
+        <CityList />
+      </Suspense>
+    </div>
   </main>
 </template>
 
@@ -37,6 +43,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import CityList from "@/components/CityList.vue";
 
 // const APIKey = "S5pdFsyVtm1NMYhdk";
 const mapboxAPIKey =
