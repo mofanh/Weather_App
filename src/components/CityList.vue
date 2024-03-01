@@ -36,6 +36,9 @@ const getSavedCities = async () => {
   }
 };
 
+// 设置强行等待时间1s
+await new Promise((res) => setTimeout(res, 1000));
+
 await getSavedCities();
 
 const goToCityView = (city) => {
